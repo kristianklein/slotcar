@@ -1,0 +1,8 @@
+# Ignore compiler output files
+*.hex
+*.eep.hex
+*.obj
+*.cof
+
+# Ignore data folder
+/data
