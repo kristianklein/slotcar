@@ -75,8 +75,8 @@ setup:
 	;-----;
     ; PWM ;
     ;-----;
-    ; Fast PWM, non-inverted mode, prescaler = 1 (f = 62.5 kHz)
-	LDI		R16, 0b01101001 ; (1<<WGM20)|(1<<COM21)|(1<<WGM21)|(1<<CS20)
+    ; Phase correct PWM, clear OC2 on upward slope, set OC2 on downward slope, prescaler = 1 (f = 31.25 kHz)
+    LDI     R16, (1<<WGM20)|(1<<COM21)|(1<<CS20)
 	OUT		TCCR2, R16
 
     ;---------------;
