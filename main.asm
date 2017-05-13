@@ -1,4 +1,4 @@
-.INCLUDE "includes/m32Adef.inc"
+.INCLUDE "dependencies/m32Adef.inc"
 .INCLUDE "includes/pindef.asm" ; Pin definitions
 .INCLUDE "includes/consts.asm" ; Constants
 .INCLUDE "includes/macro.asm" ; Macros
