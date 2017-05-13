@@ -1,19 +1,18 @@
-.INCLUDE "m32Adef.inc"
-.INCLUDE "pindef.asm" ; Pindefinitioner
-.INCLUDE "consts.asm" ; Konstanter
-.INCLUDE "macro.asm" ; Macros
-; Rækkefølgen af nedenstående includes er vigtig da der skiftes mellem
-; DSEG og CSEG!
-.INCLUDE "vars.asm" ; Variable (DSEG)
-.INCLUDE "vectortable.asm" ; Reset/interrupt vector table
-.INCLUDE "lookup.asm" ; Lookup tabeller
-.INCLUDE "setup.asm" ; Setup af I/O, ADC, PWM, timers, interrupts mm.
+.INCLUDE "includes/m32Adef.inc"
+.INCLUDE "includes/pindef.asm" ; Pin definitions
+.INCLUDE "includes/consts.asm" ; Constants
+.INCLUDE "includes/macro.asm" ; Macros
+.INCLUDE "includes/vars.asm" ; Variables (DSEG)
+.INCLUDE "includes/vectortable.asm" ; Reset/interrupt vector table
+.INCLUDE "includes/lookup.asm" ; Lookup tables (CSEG)
+.INCLUDE "includes/setup.asm" ; Setup I/O, ADC, PWM, timers, interrupts etc.
 
 ;-------------------;
 ;     MAIN LOOP	    ;
 ;-------------------;
 main:
-    .INCLUDE "bluetooth.asm" ; Bluetooth protokol
+    .INCLUDE "includes/bluetooth.asm" ; Bluetooth protocol
+    RJMP main
 
-.INCLUDE "isr.asm" ; Interrupt service routines
-.INCLUDE "subroutines.asm" ; Sub-routiner (funktioner)
+.INCLUDE "includes/isr.asm" ; Interrupt service routines
+.INCLUDE "includes/subroutines.asm" ; Sub-routines (functions)

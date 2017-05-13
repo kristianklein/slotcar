@@ -5,10 +5,7 @@ setup:
     ;---------------;
     ; STACK POINTER ;
     ;---------------;
-    LDI		R16, low(RAMEND)
-    OUT		SPL, R16
-    LDI		R16, high(RAMEND)
-    OUT		SPH, R16	
+    ISP R16, RAMEND	
 
     ;--------------;
     ; Input/Output ;
@@ -40,8 +37,9 @@ setup:
 	;--------;
     ; TIMER1 ;
     ;--------;
+    ; Start TIMER1 in normal mode with prescaler = 64
 	LDI		R16, (1<<CS11)|(1<<CS10)
-	OUT		TCCR1B, R16		; Prescaler = 64
+	OUT		TCCR1B, R16
 
     ;------------;
     ; INTERRUPTS ;
@@ -56,12 +54,13 @@ setup:
 	;------------;
 	; Set up ADC ;
 	;------------;
-	LDI		R16, (1<<ADLAR) ; AREF, left adjusted, ADC0, 
+    ; Read ADC0 and left adjust result (8-bits in ADCH)
+	LDI		R16, (1<<ADLAR)
 	OUT		ADMUX, R16
 	
-    ; Enable, start conversion, auto-trigger, prescaler = 128
+    ; Enable, start conversion, auto-trigger, prescaler = 128 (f = 125 kHz)
 	LDI		R16, (1<<ADEN)|(1<<ADSC)|(1<<ADATE)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)
-	OUT		ADCSRA, R16		; ADC_frekvens = 125 kHz
+	OUT		ADCSRA, R16
 
     ;-----------;              
     ; BLUETOOTH ;
@@ -70,38 +69,19 @@ setup:
 	OUT		UCSRB, R16
 	LDI		R16, (1<<UCSZ1)|(1<<UCSZ0)|(1<<URSEL) ; Set character size = 8 bits
 	OUT		UCSRC, R16
-	LDI		R16, 103		;16MHz Sætter baudrate til 9600, med U2X = 0 og error = 0,2%
+	LDI		R16, 103 ; Set baud rate to 9600 (error = 0,2%)
 	OUT		UBRRL, R16 
 
 	;-----;
     ; PWM ;
     ;-----;
-    ; Fast PWM, non-inverted mode, prescaler = 1 (f_s = 62.5 kHz)
+    ; Fast PWM, non-inverted mode, prescaler = 1 (f = 62.5 kHz)
 	LDI		R16, 0b01101001 ; (1<<WGM20)|(1<<COM21)|(1<<WGM21)|(1<<CS20)
 	OUT		TCCR2, R16
 
-    ;-----------;
-    ; RACE MODE ;
-    ;-----------;
-    ; Initialiser FLAGR (normalvis til 0x00)
-	LDI		R16, (1<<AUTOF) ; BEMÆRK! Her er AUTOF sat pga. debugging
-	MOV		FLAGR,R16
-	
-    ; Initialisér antal motorticks
-	;LDI		R16, 0x00
-	;MOV		R9, R16
-	;MOV		R10, R16
-	;MOV		R15, R16
-    ; IKKE NØDVENDIG LÆNGERE, DA DER ER OPRETTET EN VARIABEL
-
-	; Midlertidig setup af y-pointer
-	;LDI		YL,LOW(sving)	
-	;LDI		YH,HIGH(sving)
-    ; IKKE NØDVENDIG LÆNGERE, DA DEN INITIALISERES I FINISH_LINE_INTERRUPT
-
-	RCALL	delay_1sec
-	RCALL	delay_1sec
-	
-	; Set motor speed
-	LDI		R16, DEFAULT_MOTORSPEED
-	OUT		OCR2, R16
+    ;---------------;
+    ; MISCELLANEOUS ;
+    ;---------------;
+    ; Initialize custom flag register
+	LDI		R16, 0 
+	MOV		FLAGR, R16
