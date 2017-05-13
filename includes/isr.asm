@@ -12,7 +12,7 @@ distance_interrupt:
     PUSH R18
     PUSH R19
     
-	;------------;
+    ;------------;
     ; FLAG CHECK ;
     ;------------;
     

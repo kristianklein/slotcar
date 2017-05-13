@@ -1,5 +1,5 @@
 ;-------------------;
-;   SUB-ROUTINES 	;
+;   SUB-ROUTINES    ;
 ;-------------------;
 ; Number of cycles are including RCALL and RET
 
